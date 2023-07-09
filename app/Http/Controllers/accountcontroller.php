@@ -40,7 +40,7 @@ class accountcontroller extends Controller
          $YOS=$views->YOS;
          $SECTION=$views->SECTION;
          $values = array('name' => $FULLNAME,'regno' => $REGNO,'batch' => $BATCH,'yos' => $YOS,
-         'amount' => '0','fine_details' => 'ACCOUNT','section' =>  $SECTION,'staffid' => $userid,'status' => '');
+         'amount' => '0','fine_details' => 'ACCOUNT','section' =>  $SECTION,'staffid' => $userid,'attendance' => '','status' => '');
                    DB::connection('mysql2')->table('student_fine')->insert($values);
         
         }

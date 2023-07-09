@@ -86,6 +86,7 @@ if($_SESSION["userName"]==""){
                     <th scope="col">Regno</th>
                     <th scope="col">Batch</th>
                     <th scope="col">YOS</th>
+                    <th scope="col">Attendance %</th>
                     <th scope="col">Accountend Status</th>
                   </tr>
                 </thead>
@@ -94,7 +95,7 @@ if($_SESSION["userName"]==""){
                     @endphp
                     @foreach($view as $views)
                     @php
-                    $email=$views->REGNO;
+                    $email=$views->REGNO; 
                     @endphp
 <?php
 $data=DB::connection('mysql2')->select("select DISTINCT `name` from  `student_fine` where `regno`= '$email' and `section`='$section' and `fine_details`='ACCOUNT' ");
@@ -105,16 +106,61 @@ $value= substr("$hii",1,-1);
 $tokenOutput2 = json_decode($value);
  $name  =$tokenOutput2->{'name'}; 
 ?>
+<?php   
+
+
+
+$data11=DB::connection('mysql2')->select("select * from `totalhouratt` where `SECTION`='$section'");
+//print_r($data11);
+foreach($data11 as $data11s){
+    $semstart=$data11s->SEMSTART;
+      $semend=$data11s->SEMEND;
+       $H1=$data11s->TOTALHOUR;
+    $HOUR_DAY=$data11s->HOUR_DAY;
+}
+
+
+
+$select11 = DB::connection('mysql2')->select("SELECT sum(ATTHOUR) as attehour from `stu_att` where `DATE` BETWEEN '$semstart' AND '$semend'  and `SECTION`='$section' and `REGNO`='$email'");
+foreach($select11 as $select11s){
+     $attent_hout=$select11s->attehour;
+  
+}
+
+
+$select = DB::connection('mysql2')->table('stu_att')
+->whereBetween('DATE', [$semstart, $semend])
+->where('SECTION', '=', $section)->distinct('DATE');
+
+
+ $count = $select->count();
+
+ $current_precentage=0;
+if($HOUR_DAY>0){
+
+$actual_hour=$count*$HOUR_DAY;
+
+  if($actual_hour>0){
+   $current_precentage=round($attent_hout/$actual_hour*100);
+  }else{
+
+    $current_precentage=0; 
+  }
+
+
+}
+?>
                   <tr>
                  <th> <input type="checkbox" name="chk[]" value="{{$views->id}}"
                  <?php if($name==""){ ?>  disabled  <?php } ?>>
-                 
+                 <input name="att[]"value="{{$current_precentage}}" <?php if($name==""){ ?>  disabled  <?php } ?> hidden>
                 </th>
                     <th scope="row">{{$sno++}}</th>
                     <td>{{$views->FULLNAME}}</td>
                     <td>{{$views->REGNO}}</td>
                     <td>{{$views->BATCH}}</td>
                     <td>{{$views->YOS}}</td>
+                    <td>{{$current_precentage}}</td>
                     <td><?php if($name!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                    
                   </tr>

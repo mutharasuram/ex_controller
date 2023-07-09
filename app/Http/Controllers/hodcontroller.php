@@ -26,12 +26,17 @@ class hodcontroller extends Controller
         public function insert_no(Request $request){ 
             $userid=$_SESSION["userEmail"];
             $id = $request->input('chk');
-        //print_r($id);
+            $att = $request->input('att');
+            
+
         if($id!=""){
-        foreach($id as $ids){
-        
-         $ids;
-        $data=DB::connection('mysql2')->select("select * from  `studentuser` where `id`= '$ids' ");
+            
+        foreach($id as $ids => $value){
+
+             $idss = $id[$ids];
+              $attt = $att[$ids];
+         
+        $data=DB::connection('mysql2')->select("select * from  `studentuser` where `id`= '$idss' ");
         // print_r($data);
         foreach($data as $views){
          $FULLNAME=$views->FULLNAME;
@@ -40,7 +45,7 @@ class hodcontroller extends Controller
          $YOS=$views->YOS;
          $SECTION=$views->SECTION;
          $values = array('name' => $FULLNAME,'regno' => $REGNO,'batch' => $BATCH,'yos' => $YOS,
-         'amount' => '0','fine_details' => 'HOD','section' =>  $SECTION,'staffid' => $userid,'status' => '');
+         'amount' => '0','fine_details' => 'HOD','section' =>  $SECTION,'staffid' => $userid,'status' => '','attendance' => $attt);
                    DB::connection('mysql2')->table('student_fine')->insert($values);
         
         }

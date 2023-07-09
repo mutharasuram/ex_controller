@@ -215,7 +215,7 @@ return redirect('dashboard')->with('alert', 'Hall Ticket Successfully Generated!
             }     
             public function excel(Request $request){
                 $section = $request->input('section');
-                $data=DB::connection('mysql2')->select("select DISTINCT `regno` from  `student_fine` where `section`= '$section' and `status`!='' and `fine_details`='VOICE' ");
+                $data=DB::connection('mysql2')->select("select DISTINCT `regno` from  `student_fine` where `section`= '$section'  and `fine_details`='VOICE' ");
 
 
     //print_r($data);

@@ -86,6 +86,7 @@ if($_SESSION["userName"]==""){
                     <th scope="col">Regno</th>
                     <th scope="col">Batch</th>
                     <th scope="col">YOS</th>
+                    <th scope="col">Attendance</th>
                     <th scope="col">Accountend Status</th>
                     <th scope="col">HOD Status</th>
                   </tr>
@@ -112,6 +113,9 @@ $value1= substr("$hii1",1,-1);
 
 $tokenOutput21 = json_decode($value1);
  $name1  =$tokenOutput21->{'name'}; 
+ $data13=DB::connection('mysql2')->select("select * from  `student_fine` where `regno`= '$email' and `section`='$section' and `fine_details`='HOD' ");
+//print_r($data13);
+ $att=$data13[0]->attendance;
 ?>
                   <tr>
                  <th> <input type="checkbox" name="chk[]" value="{{$views->id}}"
@@ -123,6 +127,7 @@ $tokenOutput21 = json_decode($value1);
                     <td>{{$views->REGNO}}</td>
                     <td>{{$views->BATCH}}</td>
                     <td>{{$views->YOS}}</td>
+                    <td>{{$att}}</td>
                     <td><?php if($name!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                     <td><?php if($name1!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                   </tr>

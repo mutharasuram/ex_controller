@@ -138,50 +138,7 @@ $tokenOutput21 = json_decode($value1);
 
    
 ?>
-<?php   
 
-
-
-$data11=DB::connection('mysql2')->select("select * from `totalhouratt` where `SECTION`='$section'");
-//print_r($data11);
-foreach($data11 as $data11s){
-    $semstart=$data11s->SEMSTART;
-      $semend=$data11s->SEMEND;
-       $H1=$data11s->TOTALHOUR;
-    $HOUR_DAY=$data11s->HOUR_DAY;
-}
-
-
-
-$select11 = DB::connection('mysql2')->select("SELECT sum(ATTHOUR) as attehour from `stu_att` where `DATE` BETWEEN '$semstart' AND '$semend'  and `SECTION`='$section' and `REGNO`='$email'");
-foreach($select11 as $select11s){
-     $attent_hout=$select11s->attehour;
-  
-}
-
-
-$select = DB::connection('mysql2')->table('stu_att')
-->whereBetween('DATE', [$semstart, $semend])
-->where('SECTION', '=', $section)->distinct('DATE');
-
-
- $count = $select->count();
-
-
-if($HOUR_DAY>0){
-
-$actual_hour=$count*$HOUR_DAY;
-
-  if($actual_hour>0){
-   $current_precentage=round($attent_hout/$actual_hour*100);
-  }else{
-
-    $current_precentage=0; 
-  }
-
-
-}
-?>
 
 
 
@@ -202,7 +159,7 @@ $actual_hour=$count*$HOUR_DAY;
                     <td><?php if($name1!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                     <td><?php if($name12!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                     <td><?php if($name123!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
-                    <td>{{$current_precentage}}</td>
+                    <td></td>
                   </tr>
                 @endforeach
                 
