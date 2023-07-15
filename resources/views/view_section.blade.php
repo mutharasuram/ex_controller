@@ -86,11 +86,12 @@ if($_SESSION["userName"]==""){
                     <th scope="col">Regno</th>
                     <th scope="col">Batch</th>
                     <th scope="col">YOS</th>
+                    <th scope="col">Attendance</th>
                     <th scope="col">Accounts </th>
                     <th scope="col">HOD </th>
                     <th scope="col">Deen of Student </th>
                     <th scope="col">Principal </th>
-                    <th scope="col">Attendance</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -136,7 +137,9 @@ $tokenOutput21 = json_decode($value1);
    $name123  =$tokenOutput223->{'name'}; 
 
 
-   
+   $data13=DB::connection('mysql2')->select("select * from  `student_fine` where `regno`= '$email' and `section`='$section' and `fine_details`='HOD' ");
+//print_r($data13);
+ $att=$data13[0]->attendance; 
 ?>
 
 
@@ -155,11 +158,12 @@ $tokenOutput21 = json_decode($value1);
                     <td>{{$views->REGNO}}</td>
                     <td>{{$views->BATCH}}</td>
                     <td>{{$views->YOS}}</td>
+                    <td>{{$att}}</td>
                     <td><?php if($name!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                     <td><?php if($name1!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                     <td><?php if($name12!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
                     <td><?php if($name123!=""){?> <span style="background-color:green;color:white">Approve</span> <?php }else{?> <span style="background-color:red;color:white">Not Approve</span> <?php }  ?></td>
-                    <td></td>
+                    
                   </tr>
                 @endforeach
                 

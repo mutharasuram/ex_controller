@@ -42,7 +42,7 @@ Route::post('view_attt',[UserController::class,'view_attt']);
 Route::get('insestaff/{module}/{value}',[UserController::class,'insestaff']);
 Route::get('view_speal1',[UserController::class,'view_speal1']);
 Route::post('spl_app',[UserController::class,'spl_app']);
-
+Route::post('excel1',[UserController::class,'excel1']);
 Route::get('logout',[UserController::class,'logout']);
 
 

@@ -134,6 +134,28 @@ if($_SESSION["userName"]==""){
               <div class="col-md-4">
             </div>
               <div class="col-md-4">
+                  <label for="validationCustom04" class="form-label">Generate Nominal Role:</label>
+                  <select class="form-select" name="section" id="validationCustom04" required>
+                    <option selected disabled value="">Choose...</option>
+                    @foreach($view as $views)
+                    <option>{{$views->SECTION}}</option>
+                    @endforeach
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a Section.
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-warning" type="submit">Generate</button>
+                </div></center>
+                </form>
+                <br>
+<br>
+<center>  <form class="row g-3  needs-validation"action="{{url('excel1')}}"method="post" novalidate>
+            @csrf
+              <div class="col-md-4">
+            </div>
+              <div class="col-md-4">
                   <label for="validationCustom04" class="form-label">Nominal Role:</label>
                   <select class="form-select" name="section" id="validationCustom04" required>
                     <option selected disabled value="">Choose...</option>

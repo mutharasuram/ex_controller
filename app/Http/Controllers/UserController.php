@@ -215,14 +215,94 @@ return redirect('dashboard')->with('alert', 'Hall Ticket Successfully Generated!
             }     
             public function excel(Request $request){
                 $section = $request->input('section');
-                $data=DB::connection('mysql2')->select("select DISTINCT `regno` from  `student_fine` where `section`= '$section'  and `fine_details`='VOICE' ");
+
+                $data1 = DB::connection('mysql2')
+                    ->table('staffassi')
+                    ->select('assimod')
+                    ->distinct()
+                    ->where('sec', $section)
+                    ->get()
+                    ->pluck('assimod');
+                
+                $data = DB::connection('mysql2')
+                    ->table('student_fine')
+                    ->select('regno')
+                    ->distinct()
+                    ->where('section', $section)
+                    ->where('fine_details', 'VOICE')
+                    ->get()
+                    ->pluck('regno');
+                
+                $data33 = DB::connection('mysql2')
+                    ->table('coeinternals')
+                    ->whereIn('regno', $data)
+                    ->whereIn('module', $data1)
+                    ->where('status', 'Published')
+                    ->get();
+
+//print_r($data[0]);
+if($data[0]!=""){
+                    $uniqueCombinations = array();
+
+                    foreach ($data33 as $record) {
+                        $module = $record->module;
+                        $regno = $record->regno;
+                        $internal = $record->internal;
+                        
+                        // Check if the combination of regno and module has already been encountered
+                        if (!isset($uniqueCombinations[$regno][$module])) {
+                            // Add the combination to the uniqueCombinations array
+                            $uniqueCombinations[$regno][$module] = true;
+                            
+                            $regno;
+                            $module;
+                            $internal;
 
 
-    //print_r($data);
-        return view('excel')->with('view',$data)->with('section',$section);
+                           DB::connection('mysql2')
+                         ->table('nominal_role')->insert([
+                                'regno' => $regno,
+                                'section' => $section,
+                                'module' => $module,
+                                'mark' => $internal,
+                            ]);
+                            
+
+
+                        }
+                    }
+
+                     return redirect('dashboard')->with('alert', 'Nominal Role Successfully Generated!');  
+                }else{
+
+
+                    return redirect('dashboard')->with('alert1', 'No Data!');  
+                } 
+                    
+                   
+                   
+                
+ 
         
                 }  
 
+                public function excel1(Request $request){
+                    $section = $request->input('section');
+                    $data1 = DB::connection('mysql2')
+                    ->table('nominal_role')
+                    ->where('section', $section)
+                    ->get();
+                   // print_r($data1);
+                    if($data[0]!=""){
+
+return view('excel')->with('view', $data1)->with('section', $section);
+
+                    }else{
+                        return redirect('dashboard')->with('alert1', 'No Data!');
+
+                    }
+
+                }
 public function staff_alert(){
 
 $data=DB::connection('mysql2')->select("select DISTINCT `SECTION` from  `studentuser`");
@@ -322,7 +402,7 @@ return view('attendancc')->with('section',$section);
                
 
      $values = array('name' => $name,'regno' => $regno,'batch' => $BATCH,'yos' => $YOS,
-     'amount' => '0','fine_details' => 'VOICE','section' =>  $section,'staffid' => $staffid,'status' => 'Done');
+     'amount' => '0','fine_details' => 'VOICE','section' =>  $section,'staffid' => $staffid,'status' => 'Done','attendance' => '');
                DB::connection('mysql2')->table('student_fine')->insert($values);
                DB::connection('mysql2')->table('special_permission')->where(['id'=>$id])->update(array('status' => 'Done'));
   

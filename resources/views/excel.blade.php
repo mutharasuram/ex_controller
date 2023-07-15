@@ -111,40 +111,15 @@ if($value!=""){
                 </thead>
                 <tbody>
                     @foreach($view as $views)
-                    @php
-                    $regno=$views->regno;
-                    $data=DB::connection('mysql2')->select("select * from  `studentuser` where `REGNO`= '$regno' ");
-                   // print_r($data);
-                   $hii=json_encode($data);
-$value= substr("$hii",1,-1);
-
-$tokenOutput2 = json_decode($value);
-  $name  =$tokenOutput2->{'FULLNAME'}; 
-  $dep  =$tokenOutput2->{'AWARD'};
-  $data1=DB::connection('mysql2')->select("select DISTINCT`assimod` from  `staffassi` where `sec`= '$section' ");
-@endphp
+                   
                   <tr>
                 
                     <th scope="row">{{$sno++}}</th>
-                    <td>{{$name}}</td>
-                    <td>{{$regno=$views->regno}}</td>
-                    <td>{{$section}}</td>
-                    <td>{{$dep}}</td>
-                    <td>
-                    <?php    
- foreach($data1 as $ddd){
-  $moduleee=$ddd->assimod;
-  $data33=DB::connection('mysql2')->select("select DISTINCT`internal` from  `coeinternals` where `regno`= '$regno' and `section`='$section' and `module`='$moduleee' and `status`='Published' ");
-  
-  //print_r($data33);
-  $internal=$data33[0]->internal;
-   echo $moduleee."=".$internal."<br>";
-
-
- }
- 
- 
- ?></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
 
                   </tr>
 @endforeach
